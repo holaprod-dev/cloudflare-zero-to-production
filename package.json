@@ -28,6 +28,7 @@
     "workerd@1.20261103.1": true
   },
   "description": "Code for the guide \"Cloudflare from zero to production\" (holaprod.dev), tested locally",
+  "license": "MIT",
   "dependencies": {
     "@libsql/client": "^0.18.0"
   }

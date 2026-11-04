@@ -44,3 +44,7 @@ What can't be simulated locally is only checked with `tsc` and when bundling:
 - The ids in `wrangler.jsonc` are examples. To deploy, create your resources and use the ids the commands give you back.
 - `TURNSTILE_SECRET` in `.dev.vars.example` is Cloudflare's public test secret key, the one that always passes.
 - This repository is published from [holaprod.dev](https://holaprod.dev)'s own repository. Issues and pull requests are welcome; changes are applied there and published here again.
+
+## License
+
+[MIT](LICENSE). Use it, copy it and adapt it for your own projects, including commercial ones.
