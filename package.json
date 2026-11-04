@@ -1,0 +1,34 @@
+{
+  "name": "notes",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "types": "wrangler types",
+    "check": "wrangler types && tsc",
+    "test": "vitest run",
+    "bundle": "wrangler deploy --dry-run --env=\"\" --outdir .dist"
+  },
+  "devDependencies": {
+    "@cloudflare/vitest-plugin": "^1.5.1",
+    "@types/pg": "^8.23.1",
+    "aws4fetch": "^1.0.20",
+    "hono": "^4.13.16",
+    "jose": "^6.2.15",
+    "pg": "^8.23.1",
+    "postal-mime": "^4.2.0",
+    "typescript": "^7.0.2",
+    "vitest": "^5.1.0",
+    "wrangler": "^4.157.0"
+  },
+  "allowScripts": {
+    "esbuild@0.28.1": true,
+    "esbuild@0.28.2": true,
+    "workerd@1.20260815.1": true,
+    "workerd@1.20261103.1": true
+  },
+  "description": "Code for the guide \"Cloudflare from zero to production\" (holaprod.dev), tested locally",
+  "dependencies": {
+    "@libsql/client": "^0.18.0"
+  }
+}

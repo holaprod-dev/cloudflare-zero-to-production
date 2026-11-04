@@ -1,0 +1,257 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "notes",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-11-03",
+  "observability": {
+    "enabled": true,
+    "head_sampling_rate": 1,
+    "traces": {
+      "enabled": true,
+      "head_sampling_rate": 0.1
+    }
+  },
+  "placement": {
+    "mode": "smart"
+  },
+  "cache": {
+    "enabled": true
+  },
+  "vars": {
+    "ENVIRONMENT": "production",
+    "PUBLIC_URL": "https://notes.mydomain.dev",
+    "ACCOUNT_ID": "0123456789abcdef",
+    "TURSO_URL": "libsql://notes-mydomain.turso.io"
+  },
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application",
+    "run_worker_first": [
+      "/api/*"
+    ]
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "notes",
+      "database_id": "00000000-0000-0000-0000-000000000000",
+      "migrations_dir": "migrations"
+    }
+  ],
+  "kv_namespaces": [
+    {
+      "binding": "CONFIG",
+      "id": "00000000000000000000000000000000"
+    }
+  ],
+  "r2_buckets": [
+    {
+      "binding": "ATTACHMENTS",
+      "bucket_name": "notes-attachments"
+    }
+  ],
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "ROOMS",
+        "class_name": "Room"
+      }
+    ]
+  },
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_sqlite_classes": [
+        "Room"
+      ]
+    }
+  ],
+  "queues": {
+    "producers": [
+      {
+        "binding": "ATTACHMENTS_QUEUE",
+        "queue": "process-attachments"
+      }
+    ],
+    "consumers": [
+      {
+        "queue": "process-attachments",
+        "max_batch_size": 10,
+        "max_batch_timeout": 5,
+        "max_retries": 3,
+        "dead_letter_queue": "process-attachments-dlq"
+      }
+    ]
+  },
+  "workflows": [
+    {
+      "name": "signup-flow",
+      "binding": "SIGNUP_FLOW",
+      "class_name": "SignupFlow"
+    }
+  ],
+  "triggers": {
+    "crons": [
+      "0 3 * * *",
+      "*/15 * * * *"
+    ]
+  },
+  "send_email": [
+    {
+      "name": "EMAIL",
+      "remote": true
+    }
+  ],
+  "images": {
+    "binding": "IMAGES"
+  },
+  "ai": {
+    "binding": "AI",
+    "remote": true
+  },
+  "vectorize": [
+    {
+      "binding": "VECTORS",
+      "index_name": "notes-vectors"
+    }
+  ],
+  "hyperdrive": [
+    {
+      "binding": "HYPERDRIVE",
+      "id": "00000000000000000000000000000000",
+      "localConnectionString": "postgres://user:password@localhost:5432/notes"
+    }
+  ],
+  "ratelimits": [
+    {
+      "name": "LOGIN_LIMITER",
+      "namespace_id": "1001",
+      "simple": {
+        "limit": 5,
+        "period": 60
+      }
+    }
+  ],
+  "analytics_engine_datasets": [
+    {
+      "binding": "METRICS",
+      "dataset": "notes_events"
+    }
+  ],
+  "previews": {
+    "vars": {
+      "ENVIRONMENT": "preview"
+    },
+    "d1_databases": [
+      {
+        "binding": "DB",
+        "database_name": "notes-preview",
+        "database_id": "00000000-0000-0000-0000-000000000001"
+      }
+    ]
+  },
+  "env": {
+    "staging": {
+      "vars": {
+        "ENVIRONMENT": "staging",
+        "PUBLIC_URL": "https://notes.mydomain.dev",
+        "ACCOUNT_ID": "0123456789abcdef",
+        "TURSO_URL": "libsql://notes-staging-mydomain.turso.io"
+      },
+      "d1_databases": [
+        {
+          "binding": "DB",
+          "database_name": "notes-staging",
+          "database_id": "00000000-0000-0000-0000-000000000002"
+        }
+      ],
+      "kv_namespaces": [
+        {
+          "binding": "CONFIG",
+          "id": "00000000000000000000000000000000"
+        }
+      ],
+      "r2_buckets": [
+        {
+          "binding": "ATTACHMENTS",
+          "bucket_name": "notes-attachments"
+        }
+      ],
+      "durable_objects": {
+        "bindings": [
+          {
+            "name": "ROOMS",
+            "class_name": "Room"
+          }
+        ]
+      },
+      "queues": {
+        "producers": [
+          {
+            "binding": "ATTACHMENTS_QUEUE",
+            "queue": "process-attachments"
+          }
+        ],
+        "consumers": [
+          {
+            "queue": "process-attachments",
+            "max_batch_size": 10,
+            "max_batch_timeout": 5,
+            "max_retries": 3,
+            "dead_letter_queue": "process-attachments-dlq"
+          }
+        ]
+      },
+      "workflows": [
+        {
+          "name": "signup-flow",
+          "binding": "SIGNUP_FLOW",
+          "class_name": "SignupFlow"
+        }
+      ],
+      "send_email": [
+        {
+          "name": "EMAIL",
+          "remote": true
+        }
+      ],
+      "images": {
+        "binding": "IMAGES"
+      },
+      "ai": {
+        "binding": "AI",
+        "remote": true
+      },
+      "vectorize": [
+        {
+          "binding": "VECTORS",
+          "index_name": "notes-vectors"
+        }
+      ],
+      "hyperdrive": [
+        {
+          "binding": "HYPERDRIVE",
+          "id": "00000000000000000000000000000000",
+          "localConnectionString": "postgres://user:password@localhost:5432/notes"
+        }
+      ],
+      "ratelimits": [
+        {
+          "name": "LOGIN_LIMITER",
+          "namespace_id": "1001",
+          "simple": {
+            "limit": 5,
+            "period": 60
+          }
+        }
+      ],
+      "analytics_engine_datasets": [
+        {
+          "binding": "METRICS",
+          "dataset": "notes_events"
+        }
+      ]
+    }
+  }
+}
